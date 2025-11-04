@@ -7,7 +7,7 @@ clc; clear; close all;
 
 % Simulation parameters
 dt       = 0.005;
-endTime  = 30;
+endTime  = 50;
 % Initialize robot model and simulator
 robotModel = UvmsModel();          
 sim = UvmsSim(dt, robotModel, endTime);
@@ -18,6 +18,7 @@ unity = UnityInterface("127.0.0.1");
 task_vehicle = TaskVehicle();       
 task_tool    = TaskTool();
 task_set = {task_tool, task_vehicle};
+
 % Define actions and add to ActionManager
 actionManager = ActionManager();
 actionManager.addAction(task_set);  % action 1
@@ -40,12 +41,8 @@ for step = 1:sim.maxSteps
     robotModel.altitude = unity.receiveAltitude(robotModel);
 
     % 2. Compute control commands for current action
-    % I perform my control depending on the distance (Og - Ov)
-
-    % INVERTITO ORDINE DI V_NU E Q_DOT
     [v_nu, q_dot] = actionManager.computeICAT(robotModel);
 
-    % INVERTITO ORDINE DI V_NU E Q_DOT
     % 3. Step the simulator (integrate velocities)
     sim.step(v_nu, q_dot);
 
