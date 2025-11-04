@@ -40,19 +40,19 @@ classdef TaskVehicle < Task
         function updateReference(obj, robot)
             [~, lin] = CartError(robot.wTgv , robot.wTv); % I compute the cartesian error between two frames projected on w
             disp(lin);
-            obj.xdotbar = - 0.2 * [0; 0; 0; lin];
+            obj.xdotbar = - 0.2 * [lin];
             % limit the requested velocities...
-            obj.xdotbar(4:6) = Saturate(obj.xdotbar(4:6), 0.2);
+            obj.xdotbar = Saturate(obj.xdotbar, 0.2);
         end
         function updateJacobian(obj, robot)
-            Jt_a  = zeros(6,7);
+            Jt_a  = zeros(3,7);
             wRv = robot.wTv(1:3, 1:3);
-            Jt_v = [ (-wRv) zeros(3); zeros(3) zeros(3)];
+            Jt_v = [(-wRv) zeros(3)];
             obj.J = [Jt_a Jt_v];
         end
         
         function updateActivation(obj, robot)
-            obj.A = eye(6);
+            obj.A = eye(3);
         end
     end
 end

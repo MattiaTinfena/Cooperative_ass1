@@ -26,7 +26,7 @@ actionManager.addAction(task_set);  % action 1
 % Define desired positions and orientations (world frame)
 w_arm_goal_position = [12.2025, 37.3748, -39.8860]';
 w_arm_goal_orientation = [0, pi, pi/2];
-w_vehicle_goal_position = [10.5, 37.5, -38]';
+w_vehicle_goal_position = [10.5, 37.5, -39.5]';
 w_vehicle_goal_orientation = [0, 0, 0];
 
 % Set goals in the robot model
