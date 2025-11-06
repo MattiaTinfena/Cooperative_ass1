@@ -18,7 +18,7 @@ unity = UnityInterface("127.0.0.1");
 task_vehicle = TaskVehicle();       
 task_tool    = TaskTool();
 task_vehicle_orientation = TaskVehicleOrientation();
-task_set = {task_vehicle_orientation, task_vehicle};
+task_set = {task_vehicle_orientation, task_vehicle, task_tool};
 
 % Define actions and add to ActionManager
 actionManager = ActionManager();
@@ -27,7 +27,7 @@ actionManager.addAction(task_set);  % action 1
 % Define desired positions and orientations (world frame)
 w_arm_goal_position = [12.2025, 37.3748, -39.8860]';
 w_arm_goal_orientation = [0, pi, pi/2];
-w_vehicle_goal_position = [10.5, 37.5, -30]';
+w_vehicle_goal_position = [10.5, 37.5, -39]';
 w_vehicle_goal_orientation = [0, 0, 0];
 
 % Set goals in the robot model
