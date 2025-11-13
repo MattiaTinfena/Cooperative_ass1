@@ -1,4 +1,4 @@
-classdef TaskVehicle < Task   
+classdef TaskVehiclePosition < Task   
     properties
 
     end

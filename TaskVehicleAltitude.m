@@ -19,9 +19,11 @@ classdef TaskVehicleAltitude < Task
         
         function updateActivation(obj, robot)
 
+
+
             obj.A = zeros(3); 
             if size(robot.altitude) == 1
-                obj.A(3,3) = DecreasingBellShapedFunction(1,1.5,0,1,robot.altitude);
+                obj.A(3,3) = DecreasingBellShapedFunction(1,1.5,0,1,errorz * robot.altitude);
             end
         end
     end

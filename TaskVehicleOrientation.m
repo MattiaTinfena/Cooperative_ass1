@@ -5,26 +5,28 @@ classdef TaskVehicleOrientation < Task
 
     methods
         function updateReference(obj, robot)
-            [ang,~] = CartError(robot.wTgv , robot.wTv); % I compute the cartesian error between two frames projected on w
-            obj.xdotbar = 0.2 * ang;
+            rho = cross([0; 0; 1], robot.wTv(1:3,3));
+            theta = asin(norm(rho));
+            obj.xdotbar = 0.2 * (0.1 - theta);
             % limit the requested velocities...
             obj.xdotbar = Saturate(obj.xdotbar, 0.2);
         end
         function updateJacobian(obj, robot)
-            Jt_a  = zeros(3,7);
+            rho = cross([0; 0; 1], robot.wTv(1:3,3));
+            theta = asin(norm(rho));
+            n = rho / theta;
+            Jt_a  = n' * zeros(3,7);
             wRv = robot.wTv(1:3, 1:3);
-            Jt_v = [zeros(3) (wRv)];
+            Jt_v = n' * [zeros(3) (wRv)];
             obj.J = [Jt_a Jt_v];
         end
         
         function updateActivation(obj, robot)
 
-            [ang,~] = CartError(robot.wTgv , robot.wTv);
-            errorz = acos(ang(3)/norm(ang));
-            errorz = min((pi - errorz), errorz);
-            obj.A = zeros(3);
-            obj.A(1,1) = IncreasingBellShapedFunction(0.1,0.2,0,1,abs(errorz));
-            obj.A(2,2) = IncreasingBellShapedFunction(0.1,0.2,0,1,abs(errorz));
+            rho = cross([0; 0; 1], robot.wTv(1:3,3));
+            theta = asin(norm(rho));
+            obj.A = IncreasingBellShapedFunction(0.1,0.2,0,1,theta);
+
         end
     end
 end
