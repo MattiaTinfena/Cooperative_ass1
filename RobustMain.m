@@ -23,8 +23,11 @@ task_zero_altitude = TaskZeroAltitude();
 safe_navigation = {task_vehicle_altitude, task_vehicle_hor_att, task_vehicle_position};
 landing = {task_zero_altitude, task_vehicle_hor_att, task_vehicle_position};
 
+task_list = {task_vehicle_position, task_tool, task_vehicle_hor_att, task_vehicle_altitude, task_zero_altitude};
+
 % Define actions and add to ActionManager
 actionManager = ActionManager();
+actionManager.setTaskList(task_list);
 actionManager.addAction(safe_navigation, "SN");  % action 1
 actionManager.addAction(landing, "L");  % action 2
 

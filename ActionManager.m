@@ -2,10 +2,11 @@ classdef ActionManager < handle
     properties
         actions = {}      % cell array of actions (each action = stack of tasks)
         action_names = {}
-        currentAction = 1 % index of currently active action
-        previousAction = 1
-        actionChanges = 0
+        current_action = 1 % index of currently active action
+        previous_action = 1
+        action_changes = 0
         action_switch_time = {}
+        all_task_list = {}
     end
 
     methods
@@ -15,21 +16,28 @@ classdef ActionManager < handle
             obj.action_names{end+1} = name;
         end
 
+        function setTaskList(obj, task_list)
+            for i = 1:length(task_list)
+                obj.all_task_list{end+1} = task_list{i};
+            end
+            disp(obj.all_task_list)
+        end
+
         function [v_nu, qdot] = computeICAT(obj, robot)
             % Get current action
-            actTasks  = obj.actions{obj.currentAction};
-            prevTasks = obj.actions{obj.previousAction};
+            actTasks  = obj.actions{obj.current_action};
+            prevTasks = obj.actions{obj.previous_action};
 
             tasks = actTasks;
 
-            if (obj.actionChanges)
+            if (obj.action_changes)
    
                 % %update ap
                 % ap = {}
 
                 % %when gaussian transitory is ended
-                obj.actionChanges = 0;
-                disp(tasks);
+                obj.action_changes = 0;
+                % disp(tasks);
             end
 
 
@@ -60,11 +68,11 @@ classdef ActionManager < handle
     function setCurrentAction(obj, actionName)
 
         found = false;
-        obj.previousAction = obj.currentAction;
-        obj.actionChanges = 1;
+        obj.previous_action = obj.current_action;
+        obj.action_changes = 1;
         for i = 1:length(obj.action_names)
             if strcmp(obj.action_names{i}, actionName)
-                obj.currentAction = i;
+                obj.current_action = i;
                 found = true;
                 break; % esci dal ciclo
             end
